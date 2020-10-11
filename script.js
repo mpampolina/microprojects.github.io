@@ -1,7 +1,11 @@
 var sideMenu = document.getElementById("sideMenu");
+var slideLeft = document.getElementById("slideLeft")
+var slideRight = document.getElementById("slideRight")
+
 
 sideMenu.addEventListener("mouseenter", menuPopout);
 sideMenu.addEventListener("mouseleave", menuPopback);
+
 
 function menuPopout(event) {
     let navigation = document.querySelector("#navigation");
