@@ -1,35 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>sketchbook</title>
-    <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div class="gridContainer">
-      <header id="sideMenu">
-        <h1 id="titleText">sketchbook</h1>
-        <nav id="navigation">
-          <ul>
-            <li><a href="#">home</a></li>
-            <li><a href="#">slideshow</a></li>
-          </ul>
-        </nav>
-      </header>
-      <main class="flexContainer">
-        <div class="slideShow">
-          <div class="slideControl">
-            <button id="slideLeft" class="slideBtn">⯬</button>
-            <button id="slideRight" class="slideBtn">⯮</button>
-          </div>
-          <img class="slideImage" style="display: block" src="./images/pattern1.jpg" />
-          <img class="slideImage" style="display: none" src="./images/pattern2.jpg" />
-          <img class="slideImage" style="display: none" src="./images/pattern3.jpg" />
-        </div>
-      </main>
-      <footer class="footer"></footer>
+---
+layout: default
+title: home
+---
+
+<main class="flexContainer">
+  <div class="slideShow">
+    <div class="slideControl">
+      <button id="slideLeft" class="slideBtn">⯬</button>
+      <button id="slideRight" class="slideBtn">⯮</button>
     </div>
-  </body>
-  <script src="./script.js"></script>
-</html>
+    <img class="slideImage" style="display: block" src="./images/pattern1.jpg" />
+    <img class="slideImage" style="display: none" src="./images/pattern2.jpg" />
+    <img class="slideImage" style="display: none" src="./images/pattern3.jpg" />
+  </div>
+</main>

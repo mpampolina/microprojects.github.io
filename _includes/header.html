@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    {% if page.url == "/sketchbook/" %}
+      <title>sketchbook</title>
+    {% else %}
+      <title>sketchbook - {{ page.title }}</title>
+    {% endif %}
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="gridContainer">
+      <header id="sideMenu">
+        <h1 id="titleText">sketchbook</h1>
+        <nav id="navigation">
+          <ul>
+            <li><a href="#">home</a></li>
+            <li><a href="#">slideshow</a></li>
+          </ul>
+        </nav>
+      </header>
