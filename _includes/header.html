@@ -7,7 +7,7 @@
     {% else %}
       <title>sketchbook - {{ page.title }}</title>
     {% endif %}
-    <link rel="stylesheet" href="./stylesheets/style.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/stylesheets/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
@@ -16,8 +16,8 @@
         <h1 id="titleText">sketchbook</h1>
         <nav id="navigation">
           <ul>
-            <li><a href="#">home</a></li>
-            <li><a href="#">slideshow</a></li>
+            <li><a href="{{ site.baseurl }}/">home</a></li>
+            <li><a href="{{ site.baseurl }}/snake/index.html">snake</a></li>
           </ul>
         </nav>
       </header>

@@ -40,6 +40,8 @@ main {
 
 .flexContainer {
   display: flex;
+  width: 100%;
+  height: var(--display-height);
 }
 
 #sideMenu {

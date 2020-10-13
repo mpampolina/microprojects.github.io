@@ -1,26 +1,8 @@
-var sideMenu = document.getElementById("sideMenu");
 var slideLeft = document.getElementById("slideLeft")
 var slideRight = document.getElementById("slideRight")
 
-
-sideMenu.addEventListener("mouseenter", menuPopout);
-sideMenu.addEventListener("mouseleave", menuPopback);
 slideRight.addEventListener("click", moveSlide);
 slideLeft.addEventListener("click", moveSlide)
-
-function menuPopout(event) {
-    let navigation = document.querySelector("#navigation");
-    let title = document.querySelector("#titleText");
-    navigation.style.display = "block";
-    title.style.display = "none";
-}
-
-function menuPopback(event) {
-    let navigation = document.querySelector("#navigation");
-    let title = document.querySelector("#titleText");
-    navigation.style.display = "none";
-    title.style.display = "block";
-}
 
 function moveSlide(event) {
     let slideImages = Array.from(document.getElementsByClassName("slideImage"))
