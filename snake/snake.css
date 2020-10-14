@@ -12,3 +12,15 @@
   width: 20px;
   height: 20px;
 }
+
+.snake {
+  background-color: blue;
+}
+
+.snake-head {
+  background-color: darkblue;
+}
+
+.apple {
+  background-color: green;
+}
