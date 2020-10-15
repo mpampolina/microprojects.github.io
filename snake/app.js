@@ -22,14 +22,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function moveSnake() {
     squares.forEach((square) => square.classList.remove("snake"));
-    gameOver = collisionDetect(snake.Coordinates[0])
+    gameOver = collisionDetect(snake.Coordinates[0]);
     if (gameOver !== true) {
       for (i = 0; i < snake.Coordinates.length; i++) {
         snake.Coordinates[i] = snake.Coordinates[i] + snake.Direction[i];
         squares[snake.Coordinates[i]].classList.add("snake");
       }
     } else {
-      alert("Game Over")
+      alert("Game Over");
       clearInterval(timerID);
     }
     snake.Direction.pop();
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function collisionDetect(headCoordinate) {
-    let gameOver = false
+    let gameOver = false;
     if (headCoordinate + currentDirection < 0) {
       gameOver = true;
     } else if (headCoordinate % 10 === 0) {
@@ -47,6 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
       gameOver = true;
     } else if (headCoordinate + currentDirection > 100) {
       gameOver = true;
+    } else if (snake.Coordinates.length >= 4) {
+      for (i = 3; i < snake.Coordinates.length; i++) {
+        if (snake.Coordinates[i] + snake.Direction[i] === headCoordinate) {
+          gameOver = true;
+          return gameOver;
+        }
+      }
     }
     return gameOver;
   }
@@ -78,5 +85,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.addEventListener("keydown", controlSnake);
-  let timerID = setInterval(moveSnake, 500);
+  let timerID = setInterval(moveSnake, 250);
 });
