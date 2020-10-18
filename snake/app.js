@@ -18,7 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let nextCurrentDirection = 1;
 
   function moveSnake() {
-    [gameOver, apple] = collisionDetect(snake.Coordinates[0], snake.Direction[0]);
+    [gameOver, apple] = collisionDetect(
+      snake.Coordinates[0],
+      snake.Direction[0]
+    );
     snake.Coordinates.forEach((index) =>
       squares[index].classList.remove("snake")
     );
@@ -57,10 +60,19 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       gameOver = true;
     } else if (squares[futureHead].classList.contains("apple")) {
-      squares[futureHead].classList.remove("apple")
+      squares[futureHead].classList.remove("apple");
+      generateApple();
       apple = true;
     }
     return [gameOver, apple];
+  }
+
+  function generateApple() {
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * Math.pow(rowWidth, 2));
+    } while (squares[randomIndex].classList.contains("snake"));
+    squares[randomIndex].classList.add("apple");
   }
 
   function controlSnake(event) {
