@@ -1,27 +1,53 @@
 /* Things we need to do:
 1. Randomly generate an apple after an apple has been eaten
 2. Be able to control the snake
-3. The snake will move automatically after 1 second
+3. The snake will move automatically after 250ms
 3. Have the snake grow by one cell after an apple has been eaten
 4. If the snake bumps into itself or into a wall it is game over. 
 */
 
 document.addEventListener("DOMContentLoaded", () => {
   const squares = document.querySelectorAll(".grid div");
+  const start = document.querySelector("#start");
+  const scoreboard = document.querySelector('#score');
   const arrowKeys = { left: 37, up: 38, right: 39, down: 40 };
-  let snake = {
-    // div coordinates for the snake's head, body, and tail respectively
-    Coordinates: [32, 31, 30],
-    // direction instructions for the snake's head, body and tail respectively
-    Direction: [1, 1, 1],
-    // direction instructions for the snake's trailing "ghost" tail
-    TailDirection: 1,
-  };
+  // snake object
+  let snake;
   // row width (in divs) of the game board
   const rowWidth = 10;
   // user inputted value that dictates the next direction instruction for the
   // snake head
-  let nextCurrentDirection = 1;
+  let nextCurrentDirection;
+  let timerID;
+  let score;
+
+  function gameStart() {
+    squares.forEach((square) => square.classList.remove("snake"));
+    squares.forEach((square) => square.classList.remove("apple"));
+    snake = {
+      // div coordinates for the snake's head, body, and tail respectively
+      Coordinates: [32, 31, 30],
+      // direction instructions for the snake's head, body and tail respectively
+      Direction: [1, 1, 1],
+      // direction instructions for the snake's trailing "ghost" tail
+      TailDirection: 1,
+    };
+    // the next direction instruction for the snake head is to move right
+    nextCurrentDirection = 1;
+    incrementScore(true);
+    generateApple();
+    document.addEventListener("keydown", controlSnake);
+    timerID = setInterval(moveSnake, 250);
+  }
+
+  function incrementScore(newGame) {
+    if (newGame) {
+      score = 0
+    } else {
+      score++;
+    }
+    scoreboard.textContent = score;
+  }
 
   function moveSnake() {
     [gameOver, apple] = collisionDetect(
@@ -40,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
           -1 * snake.TailDirection;
         snake.Coordinates.push(tailCoordinate);
         snake.Direction.push(snake.TailDirection);
+        incrementScore(false);
       }
       // move the snake coordinates by their direction and then draw the snake
       for (i = 0; i < snake.Coordinates.length; i++) {
@@ -47,7 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
         squares[snake.Coordinates[i]].classList.add("snake");
       }
     } else {
-      alert("Game Over");
+      alert(`Game Over. Your final score was ${score}. Press start to play again!`);
+      squares.forEach((square) => square.classList.remove("apple"));
       clearInterval(timerID);
     }
     // remove the last direction instruction and store it as the "ghost" value
@@ -55,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // add the latest user inputted direction instruction
     snake.Direction.unshift(nextCurrentDirection);
   }
-
 
   function collisionDetect(headCoordinate, currentDirection) {
     let gameOver = false;
@@ -111,6 +138,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  document.addEventListener("keydown", controlSnake);
-  let timerID = setInterval(moveSnake, 250);
+  start.addEventListener("click", gameStart);
 });
