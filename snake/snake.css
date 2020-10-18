@@ -24,3 +24,14 @@
 .apple {
   background-color: green;
 }
+
+#start {
+  /* display: inline; */
+  align-self: baseline;
+  margin: 13px;
+}
+
+h2 {
+  align-self: flex-start;
+  margin: 10px;
+}

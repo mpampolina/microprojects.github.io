@@ -12,14 +12,24 @@ document.addEventListener("DOMContentLoaded", () => {
   let snake = {
     Coordinates: [32, 31, 30],
     Direction: [1, 1, 1],
+    TailDirection: 30,
   };
   const rowWidth = 10;
   let nextCurrentDirection = 1;
 
   function moveSnake() {
-    gameOver = collisionDetect(snake.Coordinates[0], snake.Direction[0]);
-    snake.Coordinates.forEach((index) => squares[index].classList.remove("snake"));
-    if (gameOver !== true) {
+    [gameOver, apple] = collisionDetect(snake.Coordinates[0], snake.Direction[0]);
+    snake.Coordinates.forEach((index) =>
+      squares[index].classList.remove("snake")
+    );
+    if (!gameOver) {
+      if (apple) {
+        let tailCoordinate =
+          snake.Coordinates[snake.Coordinates.length - 1] +
+          -1 * snake.TailDirection;
+        snake.Coordinates.push(tailCoordinate);
+        snake.Direction.push(snake.TailDirection);
+      }
       for (i = 0; i < snake.Coordinates.length; i++) {
         snake.Coordinates[i] = snake.Coordinates[i] + snake.Direction[i];
         squares[snake.Coordinates[i]].classList.add("snake");
@@ -28,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Game Over");
       clearInterval(timerID);
     }
-    snake.Direction.pop();
+    snake.TailDirection = snake.Direction.pop();
     snake.Direction.unshift(nextCurrentDirection);
   }
 
@@ -36,15 +46,21 @@ document.addEventListener("DOMContentLoaded", () => {
   i.e. current direction */
   function collisionDetect(headCoordinate, currentDirection) {
     let gameOver = false;
+    let apple = false;
     let futureHead = headCoordinate + currentDirection;
-    if (futureHead < 0 ||
-      headCoordinate % rowWidth === 0 && currentDirection === -1 ||
-      headCoordinate % rowWidth === rowWidth - 1 && currentDirection === 1 ||
-      futureHead > (rowWidth * rowWidth) ||
-      snake.Coordinates.indexOf(futureHead) !== -1) {
-        gameOver = true;
+    if (
+      futureHead < 0 ||
+      (headCoordinate % rowWidth === 0 && currentDirection === -1) ||
+      (headCoordinate % rowWidth === rowWidth - 1 && currentDirection === 1) ||
+      futureHead > rowWidth * rowWidth ||
+      snake.Coordinates.indexOf(futureHead) !== -1
+    ) {
+      gameOver = true;
+    } else if (squares[futureHead].classList.contains("apple")) {
+      squares[futureHead].classList.remove("apple")
+      apple = true;
     }
-    return gameOver;
+    return [gameOver, apple];
   }
 
   function controlSnake(event) {
