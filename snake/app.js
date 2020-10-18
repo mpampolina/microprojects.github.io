@@ -10,11 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const squares = document.querySelectorAll(".grid div");
   const arrowKeys = { left: 37, up: 38, right: 39, down: 40 };
   let snake = {
+    // div coordinates for the snake's head, body, and tail respectively
     Coordinates: [32, 31, 30],
+    // direction instructions for the snake's head, body and tail respectively
     Direction: [1, 1, 1],
-    TailDirection: 30,
+    // direction instructions for the snake's trailing "ghost" tail
+    TailDirection: 1,
   };
+  // row width (in divs) of the game board
   const rowWidth = 10;
+  // user inputted value that dictates the next direction instruction for the
+  // snake head
   let nextCurrentDirection = 1;
 
   function moveSnake() {
@@ -27,12 +33,15 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     if (!gameOver) {
       if (apple) {
+        // get the last snake segment and reverse the previous tail direction
+        // to determine where the new segment should be placed
         let tailCoordinate =
           snake.Coordinates[snake.Coordinates.length - 1] +
           -1 * snake.TailDirection;
         snake.Coordinates.push(tailCoordinate);
         snake.Direction.push(snake.TailDirection);
       }
+      // move the snake coordinates by their direction and then draw the snake
       for (i = 0; i < snake.Coordinates.length; i++) {
         snake.Coordinates[i] = snake.Coordinates[i] + snake.Direction[i];
         squares[snake.Coordinates[i]].classList.add("snake");
@@ -41,12 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Game Over");
       clearInterval(timerID);
     }
+    // remove the last direction instruction and store it as the "ghost" value
     snake.TailDirection = snake.Direction.pop();
+    // add the latest user inputted direction instruction
     snake.Direction.unshift(nextCurrentDirection);
   }
 
-  /* Collision detection must account for the future state
-  i.e. current direction */
+
   function collisionDetect(headCoordinate, currentDirection) {
     let gameOver = false;
     let apple = false;
@@ -56,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (headCoordinate % rowWidth === 0 && currentDirection === -1) ||
       (headCoordinate % rowWidth === rowWidth - 1 && currentDirection === 1) ||
       futureHead > rowWidth * rowWidth ||
+      // check that the snake does not cross over itself
       snake.Coordinates.indexOf(futureHead) !== -1
     ) {
       gameOver = true;
