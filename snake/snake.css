@@ -1,43 +1,43 @@
-.grid {
+#gameBoard {
+  color: whitesmoke;
   display: flex;
-  flex-wrap: wrap;
-  width: 200px;
-  height: 200px;
-  border: 1px solid black;
-  align-self: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.grid div {
-  width: 20px;
-  height: 20px;
-}
-
-.snake {
-  background-color: blue;
-}
-
-.snake-head {
-  background-color: darkblue;
-}
-
-.apple {
-  background-color: green;
-}
-
-#start {
-  align-self: flex-start;
-  background: none;
-  border: 1px solid black;
-  border-radius: 10%;
-  margin: 15px;
-}
-
-.scoreboard {
-  align-self: flex-start;
-  margin: 17px;
+#canvas {
+  background: #f0f0f0;
+  height: 500px;
+  width: 500px;
+  border-radius: 8px;
 }
 
 h2 {
-  align-self: flex-start;
+  font-size: 40px;
+  align-self: center;
+  margin: 0px;
+}
+
+#start {
+  background: none;
+  border: 1px solid black;
+  border-radius: 2px;
+  display: inline;
+  margin: 3px;
+}
+
+#scoreboard {
+  margin: 3px;
+}
+
+.titleToolbar {
+  /* width is required to use space-between */
+  width: 500px;
+  justify-content: space-between;
+}
+
+.scoreStart {
+  align-self: center;
   margin: 10px;
 }

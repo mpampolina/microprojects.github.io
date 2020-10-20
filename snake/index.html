@@ -3,114 +3,15 @@ layout: default
 title: snake
 ---
 
-<link href="{{ site.baseurl }}/snake/snake.css" rel="stylesheet">
-<script src="{{ site.baseurl }}/snake/app.js"></script>
-<main class="flexContainer">
-  <h2>Snake</h2>
-  <div>
-    <button id="start" style="display: block;">START</button>
-    <p class="scoreboard">Score: <span id="score">0</span></p>
+<link href="{{ site.baseurl }}/snake/snake.css" rel="stylesheet" />
+<!-- <script src="{{ site.baseurl }}/snake/app.js"></script> -->
+<main id="gameBoard">
+  <div class="flexH titleToolbar">
+    <h2>Snake</h2>
+    <div class="flexV scoreStart">
+      <button id="start">START</button>
+      <p id="scoreboard">Score: <span id="score">0</span></p>
+    </div>
   </div>
-  <div class="grid">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+  <canvas id="canvas" width="500" height="500"></canvas>
 </main>

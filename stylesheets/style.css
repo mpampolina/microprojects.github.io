@@ -115,3 +115,13 @@ img {
   background-color: transparent;
   color: rgba(245, 245, 245, 0.5)
 }
+
+.flexH {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexV {
+  display: flex;
+  flex-direction: column;
+}
