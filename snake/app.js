@@ -10,14 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const snakeSegment = {
-    x: 0,
-    y: 150,
+    currentXY: [[100, 150], [50, 150], [0, 150]],
     w: 50,
     h: 50,
     dx: 2.5,
     dy: 0,
     nextdx: 2.5,
     nextdy: 0,
+    currentDxDy: [[2.5, 0], [2.5, 0], [2.5, 0]],
     speed: 2.5,
   };
   const start = document.querySelector("#start");
@@ -27,25 +27,25 @@ document.addEventListener("DOMContentLoaded", () => {
   function controlSnake(event) {
     switch (event.keyCode) {
       case arrowKeys["left"]:
-        if (snakeSegment.dx !== snakeSegment.speed) {
+        if (snakeSegment.currentDxDy[0][0] !== snakeSegment.speed) {
           snakeSegment.nextdx = -snakeSegment.speed
           snakeSegment.nextdy = 0
         }
         break;
       case arrowKeys["right"]:
-        if (snakeSegment.dx !== -snakeSegment.speed) {
+        if (snakeSegment.currentDxDy[0][0] !== -snakeSegment.speed) {
           snakeSegment.nextdx = snakeSegment.speed;
           snakeSegment.nextdy = 0
         }
         break;
       case arrowKeys["up"]:
-        if (snakeSegment.dy !== snakeSegment.speed) {
+        if (snakeSegment.currentDxDy[0][1] !== snakeSegment.speed) {
           snakeSegment.nextdy = -snakeSegment.speed;
           snakeSegment.nextdx = 0;
         }
         break;
       case arrowKeys["down"]:
-        if (snakeSegment.dy !== -snakeSegment.speed) {
+        if (snakeSegment.currentDxDy[0][1] !== -snakeSegment.speed) {
           snakeSegment.nextdy = snakeSegment.speed;
           snakeSegment.nextdx = 0;
         }
@@ -61,17 +61,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function nextPosition() {
-    if ((Math.abs(snakeSegment.dx) == snakeSegment.speed && 
-      snakeSegment.x % snakeSegment.w === 0) ||
-      (Math.abs(snakeSegment.dy) == snakeSegment.speed && 
-        snakeSegment.y % snakeSegment.h === 0)
+    if ((Math.abs(snakeSegment.currentDxDy[0][0]) == snakeSegment.speed && 
+      snakeSegment.currentXY[0][0] % snakeSegment.w === 0) ||
+      (Math.abs(snakeSegment.currentDxDy[0][1]) == snakeSegment.speed && 
+        snakeSegment.currentXY[0][1] % snakeSegment.h === 0)
       ) {
-      snakeSegment.dx = snakeSegment.nextdx;
-      snakeSegment.dy = snakeSegment.nextdy;
-      console.log(`x ${snakeSegment.x} y ${snakeSegment.y}`)
+      snakeSegment.currentDxDy.pop()
+      snakeSegment.currentDxDy.unshift([snakeSegment.nextdx, snakeSegment.nextdy])
+      console.log(`x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`)
     }
-    snakeSegment.x += snakeSegment.dx;
-    snakeSegment.y += snakeSegment.dy;
+    for (let i=0; i<snakeSegment.currentDxDy.length; i++)  {
+      snakeSegment.currentXY[i][0] += snakeSegment.currentDxDy[i][0];
+      snakeSegment.currentXY[i][1] += snakeSegment.currentDxDy[i][1];
+    }
+    
   }
 
   function clear() {
@@ -80,7 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateIterFrames() {
     clear();
-    drawSnakeSegment(snakeSegment.x, snakeSegment.y);
+    for (let i=0; i<snakeSegment.currentXY.length; i++) {
+      drawSnakeSegment(snakeSegment.currentXY[i][0], snakeSegment.currentXY[i][1]);
+    }
     nextPosition();
     requestAnimationFrame(updateIterFrames);
   }
