@@ -9,38 +9,52 @@
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
-  const snakeSegment = {
-    // Current XY value pairs for the snake segments head => tail
-    currentXY: [[100, 150], [50, 150], [0, 150]],
-    // The width of a given snake segment
-    w: 50,
-    // The height of a given snake segment
-    h: 50,
-    // The next player inputted dx and dy values in the queue
-    nextdx: 2.5,
-    nextdy: 0,
-    // The current dx and dy values assigned to each segment head => tail
-    currentDxDy: [[2.5, 0], [2.5, 0], [2.5, 0]],
-    speed: 2.5,
-  };
+  let snakeSegment;
   const start = document.querySelector("#start");
   const scoreboard = document.querySelector("#score");
   const arrowKeys = { left: 37, up: 38, right: 39, down: 40 };
+  const squareTypes = {"snake": "blue", "apple": "green"}
+
+  function startGame() {
+    snakeSegment = {
+      // Current XY value pairs for the snake segments head => tail
+      currentXY: [
+        [100, 150],
+        [50, 150],
+        [0, 150],
+      ],
+      // The width of a given snake segment
+      w: 50,
+      // The height of a given snake segment
+      h: 50,
+      // The next player inputted dx and dy values in the queue
+      nextdx: 2.5,
+      nextdy: 0,
+      // The current dx and dy values assigned to each segment head => tail
+      currentDxDy: [
+        [2.5, 0],
+        [2.5, 0],
+        [2.5, 0],
+      ],
+      speed: 2.5,
+    };
+    update();
+  }
 
   function controlSnake(event) {
     switch (event.keyCode) {
       case arrowKeys["left"]:
         // Check that the head's dx value is not going right
         if (snakeSegment.currentDxDy[0][0] !== snakeSegment.speed) {
-          snakeSegment.nextdx = -snakeSegment.speed
-          snakeSegment.nextdy = 0
+          snakeSegment.nextdx = -snakeSegment.speed;
+          snakeSegment.nextdy = 0;
         }
         break;
       case arrowKeys["right"]:
         // Check that the head's dx value is not going left
         if (snakeSegment.currentDxDy[0][0] !== -snakeSegment.speed) {
           snakeSegment.nextdx = snakeSegment.speed;
-          snakeSegment.nextdy = 0
+          snakeSegment.nextdy = 0;
         }
         break;
       case arrowKeys["up"]:
@@ -60,10 +74,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function drawSnakeSegment(x, y) {
+  function stopSnake(listDxDy) {
+    // Change the speed of all snake segments to zero.
+    for (let i = 0; i < listDxDy.length; i++) {
+      listDxDy[i][0] = 0;
+      listDxDy[i][1] = 0;
+    }
+    return listDxDy;
+  }
+
+  function collisionDetect() {
+    if (
+      // Left Wall
+      (snakeSegment.currentXY[0][0] <= 0 &&
+        snakeSegment.currentDxDy[0][0] === -snakeSegment.speed) ||
+      // Right Wall
+      (snakeSegment.currentXY[0][0] >= canvas.width - snakeSegment.w &&
+        snakeSegment.currentDxDy[0][0] === snakeSegment.speed) ||
+      // Top Wall
+      (snakeSegment.currentXY[0][1] <= 0 &&
+        snakeSegment.currentDxDy[0][1] === -snakeSegment.speed) ||
+      // Bottom Wall
+      (snakeSegment.currentXY[0][1] >= canvas.height - snakeSegment.h &&
+        snakeSegment.currentDxDy[0][1] === snakeSegment.speed)
+    ) {
+      snakeSegment.currentDxDy = stopSnake(snakeSegment.currentDxDy);
+    }
+  }
+
+  function drawSquare(x, y, type) {
     ctx.beginPath();
     ctx.rect(x, y, snakeSegment.w, snakeSegment.h);
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = squareTypes[type];
     ctx.fill();
   }
 
@@ -73,26 +115,32 @@ document.addEventListener("DOMContentLoaded", () => {
    * head segment is within the gridlines) OR If the head is going up or down
    * AND the the head coordinate is divisible by the snake segment height with
    * no remainder, remove the last set of instruction from currentDxDy
-   * and add the next set of instructions from the user input (i.e change the 
+   * and add the next set of instructions from the user input (i.e change the
    * snake direction).
    * OTHERWISE cycle through each snake segment and update their coordinates
    * by the snake segment vector.
    */
   function nextPosition() {
-    if ((Math.abs(snakeSegment.currentDxDy[0][0]) == snakeSegment.speed && 
-      snakeSegment.currentXY[0][0] % snakeSegment.w === 0) ||
-      (Math.abs(snakeSegment.currentDxDy[0][1]) == snakeSegment.speed && 
+    if (
+      (Math.abs(snakeSegment.currentDxDy[0][0]) == snakeSegment.speed &&
+        snakeSegment.currentXY[0][0] % snakeSegment.w === 0) ||
+      (Math.abs(snakeSegment.currentDxDy[0][1]) == snakeSegment.speed &&
         snakeSegment.currentXY[0][1] % snakeSegment.h === 0)
-      ) {
-      snakeSegment.currentDxDy.pop()
-      snakeSegment.currentDxDy.unshift([snakeSegment.nextdx, snakeSegment.nextdy])
-      console.log(`x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`)
+    ) {
+      snakeSegment.currentDxDy.pop();
+      snakeSegment.currentDxDy.unshift([
+        snakeSegment.nextdx,
+        snakeSegment.nextdy,
+      ]);
+      console.log(
+        `x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`
+      );
+      collisionDetect();
     }
-    for (let i=0; i<snakeSegment.currentXY.length; i++)  {
+    for (let i = 0; i < snakeSegment.currentXY.length; i++) {
       snakeSegment.currentXY[i][0] += snakeSegment.currentDxDy[i][0];
       snakeSegment.currentXY[i][1] += snakeSegment.currentDxDy[i][1];
     }
-    
   }
 
   function clear() {
@@ -103,15 +151,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // Clear the board
     clear();
     // Draw each of the snake segments based on current XY values
-    for (let i=0; i<snakeSegment.currentXY.length; i++) {
-      drawSnakeSegment(snakeSegment.currentXY[i][0], snakeSegment.currentXY[i][1]);
+    for (let i = 0; i < snakeSegment.currentXY.length; i++) {
+      drawSquare(
+        snakeSegment.currentXY[i][0],
+        snakeSegment.currentXY[i][1],
+        "snake"
+      );
     }
+    drawSquare(400, 400, "apple")
     // Change the current XY values
     nextPosition();
     // Queue up the next frame update
     requestAnimationFrame(update);
   }
 
+  start.addEventListener("click", startGame);
   document.addEventListener("keydown", controlSnake);
-  // update();
 });
