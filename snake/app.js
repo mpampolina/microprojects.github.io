@@ -10,12 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   let snakeSegment;
+  let apple;
+  let playAgain;
   const start = document.querySelector("#start");
   const scoreboard = document.querySelector("#score");
   const arrowKeys = { left: 37, up: 38, right: 39, down: 40 };
-  const squareTypes = {"snake": "blue", "apple": "green"}
+  const squareTypes = { snake: "blue", apple: "green" };
 
   function startGame() {
+    playAgain = false;
     snakeSegment = {
       // Current XY value pairs for the snake segments head => tail
       currentXY: [
@@ -37,6 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
         [2.5, 0],
       ],
       speed: 2.5,
+    };
+    apple = {
+      x: 350,
+      y: 350,
     };
     update();
   }
@@ -74,13 +81,75 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function stopSnake(listDxDy) {
-    // Change the speed of all snake segments to zero.
-    for (let i = 0; i < listDxDy.length; i++) {
-      listDxDy[i][0] = 0;
-      listDxDy[i][1] = 0;
+  /**
+   * Consumes the current apple and then respawns a new apple.
+   * Things to note:
+   * 1) appleEat() works because it is called on a square evenly divisible
+   * by 50. The verification would be more complex otherwise.
+   * 2) since the board is cleared every frame, we don't need to clear the
+   * current apple explicitly. We simply move its position.
+   */
+  function appleEat() {
+    let canDeploy = false;
+    do {
+      let x = Math.floor(Math.random() * 10) * 50;
+      let y = Math.floor(Math.random() * 10) * 50;
+      for (let i = 0; i < snakeSegment.currentXY.length; i++) {
+        if (
+          snakeSegment.currentXY[0][0] !== x &&
+          snakeSegment.currentXY[0][1] !== y
+        ) {
+          apple.x = x;
+          apple.y = y;
+          canDeploy = true;
+        }
+      }
+    } while (canDeploy === false);
+  }
+
+  // Hitbox is larger and accounts for the root of all rectangles
+  // being in the top right corner
+  function checkApple() {
+    const currentDx = snakeSegment.currentDxDy[0][0];
+    const currentDy = snakeSegment.currentDxDy[0][1];
+    if (currentDx === snakeSegment.speed) {
+      if (
+        snakeSegment.currentXY[0][0] + snakeSegment.w === apple.x &&
+        snakeSegment.currentXY[0][1] === apple.y
+      ) {
+        appleEat();
+      }
+    } else if (currentDy == snakeSegment.speed) {
+      if (
+        snakeSegment.currentXY[0][0] === apple.x &&
+        snakeSegment.currentXY[0][1] + snakeSegment.h === apple.y
+      ) {
+        appleEat();
+      }
+    } else if (currentDx === -snakeSegment.speed) {
+      if (
+        snakeSegment.currentXY[0][0] - snakeSegment.w === apple.x &&
+        snakeSegment.currentXY[0][1] === apple.y
+      ) {
+        appleEat();
+      }
+    } else if (currentDy === -snakeSegment.speed) {
+      if (
+        snakeSegment.currentXY[0][0] === apple.x &&
+        snakeSegment.currentXY[0][1] - snakeSegment.w === apple.y
+      ) {
+        appleEat();
+      }
     }
-    return listDxDy;
+  }
+
+  function stopSnake() {
+    // Change the speed of all snake segments to zero.
+    for (let i = 0; i < snakeSegment.currentDxDy.length; i++) {
+      snakeSegment.currentDxDy[i][0] = 0;
+      snakeSegment.currentDxDy[i][1] = 0;
+    }
+    alert("Game Over");
   }
 
   function collisionDetect() {
@@ -98,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (snakeSegment.currentXY[0][1] >= canvas.height - snakeSegment.h &&
         snakeSegment.currentDxDy[0][1] === snakeSegment.speed)
     ) {
-      snakeSegment.currentDxDy = stopSnake(snakeSegment.currentDxDy);
+      stopSnake();
     }
   }
 
@@ -136,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`
       );
       collisionDetect();
+      checkApple();
     }
     for (let i = 0; i < snakeSegment.currentXY.length; i++) {
       snakeSegment.currentXY[i][0] += snakeSegment.currentDxDy[i][0];
@@ -158,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "snake"
       );
     }
-    drawSquare(400, 400, "apple")
+    drawSquare(apple.x, apple.y, "apple");
     // Change the current XY values
     nextPosition();
     // Queue up the next frame update
