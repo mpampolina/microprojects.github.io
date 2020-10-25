@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     snakeSegment = {
       // Current XY value pairs for the snake segments head => tail
       currentXY: [
+        [150, 150],
         [100, 150],
         [50, 150],
-        [0, 150],
       ],
       // The width of a given snake segment
       w: 50,
@@ -40,10 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         [2.5, 0],
       ],
       speed: 2.5,
+      tailDxDy: [0, 150],
+      tailXY: [0, 150],
     };
     apple = {
-      x: 350,
-      y: 350,
+      x: 400,
+      y: 150,
     };
     update();
   }
@@ -110,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hitbox is larger and accounts for the root of all rectangles
   // being in the top right corner
   function checkApple() {
+    let appleEaten = false;
     const currentDx = snakeSegment.currentDxDy[0][0];
     const currentDy = snakeSegment.currentDxDy[0][1];
     if (currentDx === snakeSegment.speed) {
@@ -118,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         snakeSegment.currentXY[0][1] === apple.y
       ) {
         appleEat();
+        appleEaten = true;
       }
     } else if (currentDy == snakeSegment.speed) {
       if (
@@ -125,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
         snakeSegment.currentXY[0][1] + snakeSegment.h === apple.y
       ) {
         appleEat();
+        appleEaten = true;
       }
     } else if (currentDx === -snakeSegment.speed) {
       if (
@@ -132,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
         snakeSegment.currentXY[0][1] === apple.y
       ) {
         appleEat();
+        appleEaten = true;
       }
     } else if (currentDy === -snakeSegment.speed) {
       if (
@@ -139,7 +145,32 @@ document.addEventListener("DOMContentLoaded", () => {
         snakeSegment.currentXY[0][1] - snakeSegment.w === apple.y
       ) {
         appleEat();
+        appleEaten = true;
       }
+    }
+    return appleEaten;
+  }
+
+  function addSegment(tailDirective) {
+    let rear = snakeSegment.currentXY[snakeSegment.currentXY.length - 1];
+    let x2;
+    let y2;
+    if (tailDirective[0] === 2.5) {
+      x2 = rear[0] - 50;
+      y2 = rear[1];
+      snakeSegment.currentXY.push([x2, y2]);
+    } else if (tailDirective[0] === -2.5) {
+      x2 = rear[0] + 50;
+      y2 = rear[1];
+      snakeSegment.currentXY.push([x2, y2]);
+    } else if (tailDirective[1] === 2.5) {
+      x2 = rear[0];
+      y2 = rear[1] - 50;
+      snakeSegment.currentXY.push([x2, y2]);
+    } else if (tailDirective[1] === -2.5) {
+      x2 = rear[0];
+      y2 = rear[1] + 50;
+      snakeSegment.currentXY.push([x2, y2]);
     }
   }
 
@@ -196,16 +227,21 @@ document.addEventListener("DOMContentLoaded", () => {
       (Math.abs(snakeSegment.currentDxDy[0][1]) == snakeSegment.speed &&
         snakeSegment.currentXY[0][1] % snakeSegment.h === 0)
     ) {
-      snakeSegment.currentDxDy.pop();
+      snakeSegment.tailDxDy = snakeSegment.currentDxDy.pop();
       snakeSegment.currentDxDy.unshift([
         snakeSegment.nextdx,
         snakeSegment.nextdy,
       ]);
-      console.log(
-        `x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`
-      );
+      // console.log(
+      //   `x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`
+      // );
       collisionDetect();
-      checkApple();
+      appleEaten = checkApple();
+      if (appleEaten) {
+        addSegment(snakeSegment.tailDxDy);
+        snakeSegment.currentDxDy.push(snakeSegment.tailDxDy);
+        console.log(snakeSegment.currentXY)
+      }
     }
     for (let i = 0; i < snakeSegment.currentXY.length; i++) {
       snakeSegment.currentXY[i][0] += snakeSegment.currentDxDy[i][0];
