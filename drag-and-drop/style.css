@@ -1,0 +1,35 @@
+.dragArea {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  background-color: whitesmoke;
+  border-radius: 30px;
+  width: 70vw;
+}
+
+.dragBoard {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 2rem;
+  padding: 1rem;
+  background-color: grey;
+  border-radius: 30px;
+}
+
+.draggable {
+  color: whitesmoke;
+  border-radius: 30px;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: teal;
+  cursor: move;
+  height: 6rem;
+  width: 6rem;
+}
+
+.dragging {
+  opacity: 0.5;
+}
