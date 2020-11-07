@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let playAgain;
   const start = document.querySelector("#start");
   const scoreboard = document.querySelector("#score");
+  let score = 0;
   const arrowKeys = { left: 37, up: 38, right: 39, down: 40 };
   const squareTypes = { snake: "blue", apple: "green" };
 
@@ -98,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let y = Math.floor(Math.random() * 10) * 50;
       for (let i = 0; i < snakeSegment.currentXY.length; i++) {
         if (
-          snakeSegment.currentXY[0][0] !== x &&
-          snakeSegment.currentXY[0][1] !== y
+          snakeSegment.currentXY[i][0] !== x &&
+          snakeSegment.currentXY[i][1] !== y
         ) {
           apple.x = x;
           apple.y = y;
@@ -183,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("Game Over");
   }
 
-  function collisionDetect() {
+  function collisionDetectWall() {
     if (
       // Left Wall
       (snakeSegment.currentXY[0][0] <= 0 &&
@@ -199,6 +200,16 @@ document.addEventListener("DOMContentLoaded", () => {
         snakeSegment.currentDxDy[0][1] === snakeSegment.speed)
     ) {
       stopSnake();
+    }
+  }
+
+  function collisionDetectSelf() {
+    const headX = snakeSegment.currentXY[0][0];
+    const headY = snakeSegment.currentXY[0][1];
+    for (let i=1; i <(snakeSegment.currentXY.length - 1); i++) {
+      if (headX == snakeSegment.currentXY[i][0] && headY == snakeSegment.currentXY[i][1]) {
+        stopSnake();
+      }
     }
   }
 
@@ -235,12 +246,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // console.log(
       //   `x ${snakeSegment.currentXY[0][0]} y ${snakeSegment.currentXY[0][1]}`
       // );
-      collisionDetect();
+      collisionDetectWall();
+      collisionDetectSelf();
       appleEaten = checkApple();
       if (appleEaten) {
         addSegment(snakeSegment.tailDxDy);
         snakeSegment.currentDxDy.push(snakeSegment.tailDxDy);
-        console.log(snakeSegment.currentXY)
+        console.log(snakeSegment.currentXY);
+        score++;
+        scoreboard.innerText = score;
       }
     }
     for (let i = 0; i < snakeSegment.currentXY.length; i++) {
