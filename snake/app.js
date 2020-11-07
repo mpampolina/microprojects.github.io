@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
       snakeSegment.currentDxDy[i][1] = 0;
     }
     alert("Game Over");
+    location.reload();
   }
 
   function collisionDetectWall() {
@@ -206,8 +207,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function collisionDetectSelf() {
     const headX = snakeSegment.currentXY[0][0];
     const headY = snakeSegment.currentXY[0][1];
-    for (let i=1; i <(snakeSegment.currentXY.length - 1); i++) {
-      if (headX == snakeSegment.currentXY[i][0] && headY == snakeSegment.currentXY[i][1]) {
+    for (let i = 1; i < snakeSegment.currentXY.length - 1; i++) {
+      if (
+        headX == snakeSegment.currentXY[i][0] &&
+        headY == snakeSegment.currentXY[i][1]
+      ) {
         stopSnake();
       }
     }
