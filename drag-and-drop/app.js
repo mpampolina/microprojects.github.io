@@ -1,6 +1,13 @@
 const draggables = document.querySelectorAll(".draggable");
 const dragBoards = document.querySelectorAll(".dragBoard");
 
+function getElemMidCoord(elem) {
+  const elemBounds = elem.getBoundingClientRect();
+  const elemMidX = elemBounds.left + elemBounds.width / 2;
+  const elemMidY = elemBounds.top + elemBounds.height / 2;
+  return [elemMidX, elemMidY];
+}
+
 draggables.forEach((draggable) => {
   draggable.addEventListener("dragstart", () => {
     draggable.classList.add("dragging");
@@ -14,7 +21,8 @@ dragBoards.forEach((dragBoard) => {
   dragBoard.addEventListener("dragover", (e) => {
     dragging = document.querySelector(".dragging");
     justAfterDraggable = justAfter(dragBoard, e.clientX, e.clientY);
-    if (justAfterDraggable.element === null) {
+    console.log(justAfterDraggable.element);
+    if (justAfterDraggable.element == null) {
       dragBoard.append(dragging);
     } else {
       dragBoard.insertBefore(dragging, justAfterDraggable.element);
@@ -33,20 +41,24 @@ function justAfter(dragBoard, cursorX, cursorY) {
       elementBounds = element.getBoundingClientRect();
       horizontalOffset = cursorX - elementBounds.left - elementBounds.width / 2;
       verticalOffset = cursorY - elementBounds.top - elementBounds.height / 2;
-      cumOffset = horizontalOffset + verticalOffset
       if (
         horizontalOffset < 0 &&
+        horizontalOffset > justAfterElement.offsetH &&
         verticalOffset < 0 &&
-        cumOffset > justAfterElement.cumOffset
+        verticalOffset > justAfterElement.offsetV
       ) {
         return {
-          cumOffset: cumOffset,
+          offsetH: horizontalOffset,
+          offsetV: verticalOffset,
           element: element,
         };
       } else {
         return justAfterElement;
       }
     },
-    { cumOffset: Number.NEGATIVE_INFINITY }
+    {
+      offsetV: Number.NEGATIVE_INFINITY,
+      offsetH: Number.NEGATIVE_INFINITY,
+    }
   );
 }
