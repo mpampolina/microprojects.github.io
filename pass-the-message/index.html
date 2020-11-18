@@ -1,0 +1,17 @@
+---
+layout: default
+title: Pass The Message!
+---
+
+<main class="container">
+  <div class="card flexV flexCenter">
+      <h1 class="m-1 md">A message you would like to pass along...</h1>
+    <form id="lastMsgForm">
+      <input id="submitMsg" type="text" class="m-1 p-1 lg">
+      <button type="submit" class="btn sm">Submit</button>
+    </form>
+      <h2 class="m-1 p-1 md">Last Message Delivered</h2>
+      <div id="lastMsg" class="m-1 p-1">--Your-Message-Here--</div>
+  </div>
+  <script src="{{ site.baseurl}}/pass-the-message/app.js"></script>
+</main>

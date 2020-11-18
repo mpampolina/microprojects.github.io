@@ -3,6 +3,20 @@
   margin: 0 auto;
 }
 
+.card {
+  background-color: whitesmoke;
+}
+
+.btn {
+  background-color: var(--lavender);
+  border: none;
+  padding: 8px 10px;
+}
+
+.lrgInput {
+  font-size: 30px;
+}
+
 .flexH {
   display: flex;
   flex-direction: row;
@@ -11,6 +25,11 @@
 .flexV {
   display: flex;
   flex-direction: column;
+}
+
+.flexCenter {
+  justify-content: center;
+  align-items: center;
 }
 
 /* Margin */
@@ -93,4 +112,30 @@
 
 .p-5 {
   padding: 4rem;
+}
+
+/* Font Sizes */
+
+.sm {
+  /* 16px */
+  font-size: 1rem;
+}
+
+.md {
+  font-size: 1.5rem;
+}
+
+.lg {
+  /* 32px */
+  font-size: 2rem;
+}
+
+.xl {
+  /* 64px */
+  font-size: 3rem;
+}
+
+.xxl {
+  /* 128px */
+  font-size: 4rem;
 }
