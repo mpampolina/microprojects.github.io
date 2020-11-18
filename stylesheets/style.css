@@ -7,79 +7,36 @@
   background-color: var(--lavender);
 }
 
-body {
-  margin: 0px 5vw 0px 10vw;
-}
-
-.gridContainer {
-  background: var(--lavender);
-  display: grid;
-  grid-template-columns: 1fr 6fr;
-  grid-auto-rows: auto;
-  grid-template-areas:
-    "sidebar mainContent"
-    "sidebar mainContent"
-    "sidebar footer";
-}
-
-#titleText {
-  position: fixed;
-  font-size: 100px;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  color: whitesmoke;
-  margin: auto;
-  align-self: center;
-}
-
-main {
-  grid-area: mainContent;
-  margin: 20px;
-  height: var(--display-height);
-}
-
-.flexContainer {
-  display: flex;
-  width: 100%;
-  height: var(--display-height);
-}
-
-#sideMenu {
-  width: 10vw;
-  height: var(--display-height);
-  display: flex;
-  position: fixed;
-  grid-area: sidebar;
-  margin: 20px;
-}
-
-#navigation {
-  display: flex;
-  align-self: center;
-  display: none;
-}
-
-ul {
-  align-self: center;
+* {
+  box-sizing: border-box;
   margin: 0px;
   padding: 0px;
 }
 
-li {
+#titleText {
+  padding: 0px 15px;
+}
+
+.navbar {
+  justify-content: space-between;
+}
+
+nav ul {
+  justify-content: flex-end;
+}
+
+nav ul li {
   list-style-type: none;
+  padding: 0px 15px;
 }
 
 a {
   text-decoration: none;
-  color: whitesmoke;
+  color: black;
 }
 
 a:hover {
   color: grey;
-}
-
-.footer {
-  grid-area: footer;
 }
 
 img {
@@ -91,10 +48,8 @@ img {
 .slideShow {
   width: 100%;
   height: var(--image-height);
-  align-self: center;
   position: relative;
   display: flex;
-  flex-wrap: wrap;
 }
 
 .slideControl {
@@ -114,14 +69,4 @@ img {
   font-size: 30px;
   background-color: transparent;
   color: rgba(245, 245, 245, 0.5)
-}
-
-.flexH {
-  display: flex;
-  flex-direction: row;
-}
-
-.flexV {
-  display: flex;
-  flex-direction: column;
 }

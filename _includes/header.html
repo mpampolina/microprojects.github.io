@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ site.baseurl }}/stylesheets/style.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/stylesheets/utilities.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
+
     {% if page.url == "/sketchbook/" %}
       <title>sketchbook</title>
     {% else %}
       <title>sketchbook - {{ page.title }}</title>
     {% endif %}
-    <link rel="stylesheet" href="{{ site.baseurl }}/stylesheets/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="gridContainer">
-      <header id="sideMenu">
-        <h1 id="titleText">sketchbook</h1>
-        <nav id="navigation">
-          <ul>
+    <header>
+      <div class="navbar container flexH">
+        <a href="{{site.baseurl}}/"><h1 id="titleText" class="my-2">sketchbook</h1></a>
+        <nav>
+          <ul class="flexH my-3">
             <li><a href="{{ site.baseurl }}/">home</a></li>
             <li><a href="{{ site.baseurl }}/snake/index.html">snake</a></li>
             <li><a href="{{ site.baseurl }}/drag-and-drop/index.html">drag and drop</a></li>
           </ul>
         </nav>
-      </header>
+      </div>
+    </header>
