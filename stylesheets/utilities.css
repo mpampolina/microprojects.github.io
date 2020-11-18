@@ -13,8 +13,8 @@
   padding: 8px 10px;
 }
 
-.lrgInput {
-  font-size: 30px;
+.hidden {
+  display: none;
 }
 
 .flexH {
